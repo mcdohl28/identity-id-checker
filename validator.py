@@ -44,6 +44,22 @@ def compute_fin_checksum(val):
     return switch.get(val)
 
 
+def compute_new_fin_checksum(val):
+    switch = {
+        0: 'X',
+        1: 'W',
+        2: 'U',
+        3: 'T',
+        4: 'R',
+        5: 'Q',
+        6: 'P',
+        7: 'N',
+        8: 'J',
+        9: 'L',
+        10: 'K'
+    }
+    return switch.get(val)
+
 def compute_checksum(input_str):
     val01 = int(input_str[1]) * 2
     val02 = int(input_str[2]) * 7
@@ -79,13 +95,20 @@ def validate_identity_id(input_str):
             status = "Success - Valid NRIC."
         else:
             status = "Fail - Invalid NRIC."
-    elif input_str[0] == 'F' or input_str[0] == 'G' or input_str[0] == 'M':
+    elif input_str[0] == 'F' or input_str[0] == 'G':
         check_digit = compute_fin_checksum(y)
 
         if input_str[8] == check_digit:
             status = "Success- Valid FIN."
         else:
             status = "Fail - Invalid FIN."
+    elif input_str[0] == 'M':
+        check_digit = compute_new_fin_checksum(y)
+
+        if input_str[8] == check_digit:
+            status = "Success- Valid M series FIN."
+        else:
+            status = "Fail - Invalid M series FIN."
 
     print("checksum + offset (if any):", checksum)
     print("position:", y)
